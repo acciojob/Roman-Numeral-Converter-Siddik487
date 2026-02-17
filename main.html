@@ -1,49 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Roman Numeral Converter</title>
+    <title>Soundbar</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        #buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn, .stop {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .btn {
+            background-color: #28a745;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        .stop {
+            background-color: #dc3545;
+        }
+
+        .stop:hover {
+            background-color: #c82333;
+        }
+    </style>
 </head>
 <body>
 
-    <h2>Roman Numeral Converter</h2>
+    <div id="buttons">
+        <button class="btn" data-sound="sound1">Sound 1</button>
+        <button class="btn" data-sound="sound2">Sound 2</button>
+        <button class="btn" data-sound="sound3">Sound 3</button>
+        <button class="btn" data-sound="sound4">Sound 4</button>
+        <button class="btn" data-sound="sound5">Sound 5</button>
+        <button class="stop">Stop</button>
+    </div>
 
     <script>
-        function convertToRoman(num) {
-            if (num <= 0) return "";
+        const buttons = document.querySelectorAll(".btn");
+        const stopBtn = document.querySelector(".stop");
 
-            const symbols = [
-                ['M', 1000],
-                ['CM', 900],
-                ['D', 500],
-                ['CD', 400],
-                ['C', 100],
-                ['XC', 90],
-                ['L', 50],
-                ['XL', 40],
-                ['X', 10],
-                ['IX', 9],
-                ['V', 5],
-                ['IV', 4],
-                ['I', 1]
-            ];
+        let currentAudio = null;
 
-            let result = "";
+        buttons.forEach(button => {
+            button.addEventListener("click", () => {
+                const soundName = button.getAttribute("data-sound");
 
-            for (let [symbol, value] of symbols) {
-                while (num >= value) {
-                    result += symbol;
-                    num -= value;
+                // Stop previous audio
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
                 }
+
+                // Play new audio
+                currentAudio = new Audio("sounds/" + soundName + ".mp3");
+                currentAudio.play();
+            });
+        });
+
+        // Stop button functionality
+        stopBtn.addEventListener("click", () => {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
             }
-
-            return result;
-        }
-
-        // Test Cases
-        console.log(convertToRoman(14));   // XIV
-        console.log(convertToRoman(798));  // DCCXCVIII
-        console.log(convertToRoman(0));    // ""
-        console.log(convertToRoman(3999)); // MMMCMXCIX
+        });
     </script>
 
 </body>
